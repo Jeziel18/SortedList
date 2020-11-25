@@ -28,7 +28,6 @@ public class Test1 {
 
 	@Test
 	public void testTwo() {
-		
 		L.add("Jose");
 		L.add("Al");
 		L.add("Zen");
