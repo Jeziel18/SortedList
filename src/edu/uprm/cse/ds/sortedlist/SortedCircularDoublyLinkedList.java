@@ -54,9 +54,9 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     private Node<E> header;
     private int currentSize;
 
-    public SortedCircularDoublyLinkedList() {
+    public SortedCircularDoublyLinkedList() { //creating the circular list
         this.currentSize = 0;
-        this.header = new Node<>();
+        this.header = new Node<>();  // creating header
 
         this.header.setNext(this.header);
         this.header.setPrev(this.header);    //Making the list circular
@@ -85,8 +85,8 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
         else{
             Node temp = null;
-            for(temp = this.header.getNext(); temp != this.header; temp = temp.getNext()){
-                if(obj.compareTo((E) temp.getElement()) <= 0){
+            for(temp = this.header.getNext(); temp != this.header; temp = temp.getNext()){   //iterating through the list
+                if(obj.compareTo((E) temp.getElement()) <= 0){   // if the comparison is less or equal, add after the existing node in the list
                     Node nNode = new Node();
                     nNode.setNext(temp);
                     nNode.setPrev(temp.getPrev());
@@ -98,7 +98,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
                 }
             }
 
-            if(temp == this.header){
+            if(temp == this.header){  //if existing node is header, add in the list
                 Node nNode = new Node();
                 nNode.setNext(temp);
                 nNode.setPrev(temp.getPrev());
@@ -115,20 +115,20 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
     @Override
     public int size() {
-        return this.currentSize;
+        return this.currentSize;   // return the current size of the list
     }
 
     @Override
     public boolean remove(E obj) {
-        if(obj==null){
+        if(obj == null){   //if object = null, just return false
             return false;
         }
-        Node temp=null;
-        for(temp=this.header.getNext();temp!=this.header;temp=temp.getNext()){
-            if(temp.getElement().equals(obj)){
+        Node temp = null;  //temporary node to compare
+        for(temp = this.header.getNext(); temp != this.header; temp = temp.getNext()){  //iterating through the list
+            if(temp.getElement().equals(obj)){   //obj to be removed found!!
                 temp.getPrev().setNext(temp.getNext());
                 temp.getNext().setPrev(temp.getPrev());
-                temp.setNext(null);
+                temp.setNext(null);           // setting everything to null so it can be removed
                 temp.setPrev(null);
                 temp.setElement(null);
                 this.currentSize--;
@@ -140,13 +140,14 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
     @Override
     public boolean remove(int index) {
-        if(index<0 || index>=this.currentSize){
+        if(index<0 || index>=this.currentSize){   //index is not valid entry
             throw new IndexOutOfBoundsException();
         }
-        Node temp=null;
-        int counter=0;
-        for(temp=this.header.getNext();counter<index;temp=temp.getNext(),counter++);
-        temp.getPrev().setNext(temp.getNext());
+        Node temp = null; //temporary node to compare
+        int i = 0;  //created to know the index of the node to be removed
+
+        for(temp = this.header.getNext(); i < index; temp = temp.getNext(), i++);
+        temp.getPrev().setNext(temp.getNext());   //removing the element from the index
         temp.getNext().setPrev(temp.getPrev());
         temp.setNext(null);
         temp.setPrev(null);
@@ -158,9 +159,9 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
     @Override
     public int removeAll(E obj) {
-        int removed = 0;
+        int removed = 0;   //times it have been removed
 
-        while(this.contains(obj)){
+        while(this.contains(obj)){  //if the contains find obj, removed
             this.remove(obj);
             removed++;
         }
@@ -179,17 +180,18 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
     @Override
     public E get(int index) {
-        if(index<0 || index>=this.currentSize){
+        if (index < 0 || index >= this.currentSize) {   //index not valid entry
             throw new IndexOutOfBoundsException();
         }
-        Node temp=this.header.getNext();
-        for(int counter=0;counter<index;counter++,temp=temp.getNext());
-        return (E) temp.getElement();
+        Node temp = this.header.getNext();   //temporary node
+        for (int i = 0; i < index; i++, temp = temp.getNext());
+            return (E) temp.getElement();  //return the element in the index
+
     }
 
     @Override
     public void clear() {  //clear all the elements in the list
-        while(this.size() != 0){
+        while(this.size() != 0){   //if size not equal to 0, keep removing the first element in the list
             this.remove(0);
         }
     }
@@ -206,7 +208,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
     @Override
     public boolean isEmpty() {
-        return this.size() == 0;
+        return this.size() == 0;   //true if size = 0
     }
 
     @Override
@@ -217,7 +219,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     @Override
     public int firstIndex(E e) {
         for(int i = 0; i<this.size(); i++){
-            if(e.equals(this.get(i))){
+            if(e.equals(this.get(i))){   // if e = the element from i, return the index i
                 return i;
             }
         }
@@ -226,17 +228,17 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
     @Override
     public int lastIndex(E e) {
-        int index = 0;
-        int lastIndexPos = -1;
+        int i = 0;
+        int lastIndex = -1;
         Node<E> temp = this.header;
 
-        while (index < this.size()) {
-            if (temp.getNext().getElement().equals(e))
-                lastIndexPos = index;
+        while (i < this.size()) {
+            if (temp.getNext().getElement().equals(e))   //found the element!!
+                lastIndex = i;
             temp = temp.getNext();
-            index ++;
+            i++;
         }
-        return lastIndexPos;
+        return lastIndex;
     }
 
     @Override
@@ -254,18 +256,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
         return new CircularDoublyListIterator();
     }
 
-    private Node<E> getNode(int index){   //helper method for getting the node from the index position
-        int position = 0;
-        Node<E> temp = null;
-
-        temp = header.getNext();
-        while (position < index){
-            temp = temp.getNext();
-            position++;
-        }
-        return temp;
-    }
-
     private class CircularDoublyListIterator implements Iterator<E>{
 
         private Node nextNode;
@@ -273,11 +263,11 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
             this.nextNode=header.getNext();
         }
         public CircularDoublyListIterator(int index){
-            if(index<0 || index>=currentSize){
+            if(index<0 || index>=currentSize){   //invalid index
                 throw new IndexOutOfBoundsException();
             }
-            int counter=0;
-            for(this.nextNode=header.getNext();counter<index;nextNode=nextNode.getNext(),counter++);
+            int i = 0;
+            for(this.nextNode = header.getNext(); i < index; nextNode = nextNode.getNext(), i++);  //iterating through the list
         }
         @Override
         public boolean hasNext() {
@@ -288,10 +278,10 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
         @Override
         public E next() {
             // TODO Auto-generated method stub
-            if(this.hasNext()){
+            if(this.hasNext()){   //if is has next, enter here
                 E result = (E) this.nextNode.getElement();
-                this.nextNode=this.nextNode.getNext();
-                return result;
+                this.nextNode = this.nextNode.getNext();   //getting the next node
+                return result;   //return the next node
             }
             else{
                 throw new NoSuchElementException();
@@ -308,28 +298,28 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
         private Node prevNode;
 
         public CircularDoublyReverseListIterator(){
-            Node temp=null;
-            for(temp=header.getNext();temp.getNext()!=header;temp=temp.getNext());
+            Node temp = null;
+            for(temp = header.getNext(); temp.getNext() != header; temp = temp.getNext());
             this.prevNode=temp;
         }
         public CircularDoublyReverseListIterator(int index){
-            if(index<0 || index>=currentSize){
+            if(index<0 || index >= currentSize){  //invalid index
                 throw new IndexOutOfBoundsException();
             }
-            int counter=0;
-            for(this.prevNode=header.getNext();counter<index;this.prevNode=this.prevNode.getNext(),counter++);
+            int i = 0;
+            for(this.prevNode = header.getNext(); i < index;this.prevNode = this.prevNode.getNext(), i++);
         }
         @Override
         public boolean hasPrevious() {
             // TODO Auto-generated method stub
-            return this.prevNode!=header;
+            return this.prevNode!=header;   //if is has previous node, return that
         }
         @Override
         public E previous() {
             // TODO Auto-generated method stub
-            if(this.hasPrevious()){
-                E result= (E) this.prevNode.getElement();
-                this.prevNode=this.prevNode.getPrev();
+            if(this.hasPrevious()){   //if is has previous node, return that
+                E result = (E) this.prevNode.getElement();
+                this.prevNode = this.prevNode.getPrev();
                 return result;
             }
             else{
