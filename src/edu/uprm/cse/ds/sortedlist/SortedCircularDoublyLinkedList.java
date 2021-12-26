@@ -73,7 +73,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
         }
 
         if(this.isEmpty()){  // if empty, put in the first node
-            Node<E> nNode= new Node<E>();  //Creating new node
+            Node<E> nNode = new Node<E>();  //Creating new node
             nNode.setElement(obj);
             this.header.setNext(nNode);
             this.header.setPrev(nNode);
